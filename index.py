@@ -10,8 +10,9 @@ async def handle_websocket(websocket, path):
             data = await websocket.recv()
             # Process the data or forward it to the POS system via raw TCP
             print(f"Received data: {data}")
-            res = send.send()
-            await websocket.send(res)
+            if data['event'] == 'pos':
+                res = send.send()
+                await websocket.send(res)
             # Forward the data to the POS system using raw TCP (implement this part)
             # ...
     except websockets.ConnectionClosed:
