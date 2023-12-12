@@ -2,8 +2,9 @@ import win32api
 import win32print
 import win32con
 
-printer_list = win32print.EnumPrinters(2)
-print(printer_list)
+def getPrinters():
+    return win32print.EnumPrinters(2)
+
 
 def print_pdf(pdf_file_path, printer_name, paper_size):
     # Open the PDF file in binary mode
@@ -53,13 +54,3 @@ def print_pdf(pdf_file_path, printer_name, paper_size):
         finally:
             # Reset the default printer back to the original default printer
             win32print.SetDefaultPrinter(default_printer)
-
-# Specify the path to the PDF file, the printer name, and the desired paper size
-pdf_file_path = "C:\\Users\\a\\Desktop\\os-api-web\\generated_doc.docx"
-printer_name = "HP LaserJet Professional M1212nf MFP"
-paper_size = win32con.DMPAPER_A4  # Example: Set the paper size to A4
-content_width = 210  # Specify the content width in tenths of a millimeter
-content_height = 297  # Specify the content height in tenths of a millimeter
-
-# Call the function to print the PDF file with the specified paper size
-print_pdf(pdf_file_path, printer_name, paper_size)

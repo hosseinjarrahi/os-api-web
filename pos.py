@@ -9,7 +9,7 @@ PORT = config["PORT"]
 
 # Create a TCP socket
 
-def send():
+def send(amount = 12000):
     connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     try:
@@ -20,7 +20,7 @@ def send():
         # Prepare data
         data = {
             'cmd': 10,
-            'amount': 12000,
+            'amount': amount,
             'sign': '899|123456789',
             'swipe': True,
         }
