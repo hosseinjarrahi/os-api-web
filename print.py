@@ -28,8 +28,8 @@ def print_pdf(pdf_file_path, printer_name, paper_size):
                 # Set the paper size to a custom size that matches the content dimensions
                 dev_mode.Fields |= win32con.DM_PAPERSIZE
                 dev_mode.PaperSize = paper_size
-                dev_mode.PaperWidth = content_width  # Specify the width in tenths of a millimeter
-                dev_mode.PaperLength = content_height  # Specify the height in tenths of a millimeter
+                # dev_mode.PaperWidth = content_width  # Specify the width in tenths of a millimeter
+                # dev_mode.PaperLength = content_height  # Specify the height in tenths of a millimeter
 
                 # Disable background printing
                 dev_mode.Fields |= win32con.DM_PRINTQUALITY
