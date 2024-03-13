@@ -25,9 +25,11 @@ async def handle_websocket(websocket, path):
                 await websocket.send(res)
                 
             if data['event'] == 'print':
+                print('****************print***************')
+                print(data['context'])
                 convertToDocx.run(data['template'],data['context'])
                 pdf_file_path = ".\\print.docx"
-                printer_name = config("PRINTER")
+                printer_name = config.get("PRINTER")
                 paper_size = win32con.DMPAPER_A4  # Example: Set the paper size to A4
                 print_pdf(pdf_file_path, printer_name, paper_size)
                 

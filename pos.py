@@ -4,8 +4,8 @@ from dotenv import dotenv_values
 
 config = dotenv_values(".env")
 
-HOST = config["HOST"]
-PORT = config["PORT"]
+HOST = config.get("HOST")
+PORT = config.get("PORT")
 
 # Create a TCP socket
 
@@ -34,8 +34,9 @@ def send(amount = 12000):
 
         # Receive the response from the server
         response = connection.recv(1024)  # Adjust buffer size as per your requirements
-        print(f'Received response from server: {response.decode("utf-8")}')
-        return response.decode("utf-8")
+        decodedRes=response.decode("latin-1")
+        print(f'Received response from server: {decodedRes}')
+        return decodedRes
 
     except Exception as e:
         print(f'Error: {e}')
