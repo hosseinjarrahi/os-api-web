@@ -18,9 +18,10 @@ async def handle_websocket(websocket, path):
             data = json.loads(data)
             
             if data['event'] == 'pos':
-                await websocket.send('ok')
-                # res = pos.send(data['amount'])
-                # await websocket.send(res)
+                print('***********pos***************')
+                # await websocket.send('ok')
+                res = await pos.send(data['amount'])
+                await websocket.send(res)
                 
             if data['event'] == 'print':
                 convertToDocx.run(data['template'],data['context'])

@@ -11,7 +11,7 @@ PORT = config["PORT"]
 
 def send(amount = 12000):
     connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
+    amount = 12000
     try:
         # Connect to the specified address and port
         connection.connect((HOST, int(PORT)))
