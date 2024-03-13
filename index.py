@@ -19,6 +19,7 @@ async def handle_websocket(websocket, path):
             
             if data['event'] == 'pos':
                 print('***********pos***************')
+                # for bypass pos
                 # await websocket.send('ok')
                 res = await pos.send(data['amount'])
                 await websocket.send(res)
@@ -28,7 +29,7 @@ async def handle_websocket(websocket, path):
                 pdf_file_path = ".\\print.docx"
                 printer_name = config("PRINTER")
                 paper_size = win32con.DMPAPER_A4  # Example: Set the paper size to A4
-                # print_pdf(pdf_file_path, printer_name, paper_size)
+                print_pdf(pdf_file_path, printer_name, paper_size)
                 
             if data['event'] == 'printers':
                 res = getPrinters()
