@@ -1,8 +1,11 @@
 import socket
 import json
 from dotenv import dotenv_values
+import userpaths
 
-config = dotenv_values(".env")
+my_docs = userpaths.get_my_documents()
+
+config = dotenv_values(my_docs+"\\.env")
 
 HOST = config.get("HOST")
 PORT = config.get("PORT")
@@ -11,7 +14,7 @@ PORT = config.get("PORT")
 
 def send(amount = 12000):
     connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    amount = 12000
+    
     try:
         # Connect to the specified address and port
         connection.connect((HOST, int(PORT)))

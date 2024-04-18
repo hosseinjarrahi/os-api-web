@@ -6,8 +6,15 @@ import convertToDocx
 from print import print_pdf, getPrinters
 from dotenv import dotenv_values
 import json
+import userpaths
+from print import getPrinters
 
-config = dotenv_values(".env")
+my_docs = userpaths.get_my_documents()
+
+config = dotenv_values(my_docs+"\\.env")
+
+print('**********printers***********')
+print(getPrinters())
 
 async def handle_websocket(websocket, path):
     print("WebSocket connection established")
@@ -21,6 +28,8 @@ async def handle_websocket(websocket, path):
                 print('***********pos***************')
                 # for bypass pos
                 # await websocket.send('ok')
+                print('send')
+                print(data['amount'])
                 res = await pos.send(data['amount'])
                 await websocket.send(res)
                 
