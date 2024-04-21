@@ -1,3 +1,4 @@
+import os
 import pos
 import asyncio
 import win32con
@@ -16,7 +17,7 @@ config = dotenv_values(my_docs+"\\.env")
 print('**********printers***********')
 print(getPrinters())
 
-async def handle_websocket(websocket, path):
+async def handle_websocket(websocket,path):
     print("WebSocket connection established")
     try:
         while True:
@@ -30,13 +31,14 @@ async def handle_websocket(websocket, path):
                 # await websocket.send('ok')
                 print('send')
                 print(data['amount'])
+
                 res = await pos.send(data['amount'])
-                websocket.send(res)
+                await websocket.send(res)
                 
             if data['event'] == 'print':
                 print('****************print***************')
                 print(data['context'])
-                root_path = path.dirname(path.realpath(__file__))
+                root_path = os.path.dirname(os.path.realpath(__file__))
                 pdf_file_path = root_path + "\\print.docx"
                 template_file_path = root_path + "\\" + data['template']
                 convertToDocx.run(template_file_path,data['context'])
@@ -46,6 +48,9 @@ async def handle_websocket(websocket, path):
                 
             if data['event'] == 'printers':
                 res = getPrinters()
+                print('*****************************')
+                print(type(res))
+                print('*****************************')
                 await websocket.send(res)
 
     except websockets.ConnectionClosed:

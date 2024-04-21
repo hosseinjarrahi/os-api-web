@@ -12,7 +12,7 @@ PORT = config.get("PORT")
 
 # Create a TCP socket
 
-def send(amount = 12000):
+async def send(amount = 12000):
     connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     try:
