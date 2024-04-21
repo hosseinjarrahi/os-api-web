@@ -31,7 +31,7 @@ async def handle_websocket(websocket, path):
                 print('send')
                 print(data['amount'])
                 res = await pos.send(data['amount'])
-                await websocket.send(res)
+                websocket.send(res)
                 
             if data['event'] == 'print':
                 print('****************print***************')
