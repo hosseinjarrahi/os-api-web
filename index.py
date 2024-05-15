@@ -32,7 +32,7 @@ async def runPos(websocket,data):
     print('send')
     print(data['amount'])
 
-    res = await pos.send(12000)
+    res = await pos.send(data['amount'])
     await websocket.send(res)
 
 def printFile(data):
