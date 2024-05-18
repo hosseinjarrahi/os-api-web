@@ -1,51 +1,67 @@
 import os
 import pos
+import json
 import asyncio
 import win32con
+import threading
+import userpaths
 import websockets
 import convertToDocx
-from print import print_pdf, getPrinters
-from dotenv import dotenv_values
-import json
-import userpaths
 from print import getPrinters
+from dotenv import dotenv_values
+from print import print_pdf, getPrinters
 
 my_docs = userpaths.get_my_documents()
 
 config = dotenv_values(my_docs+"\\.env")
 
-print('**********printers***********')
-print(getPrinters())
+print(my_docs+"\\.env")
 
-async def handle_websocket(websocket,path):
+print('**********SELECTED PRINTER***********')
+print(config.get("PRINTER"))
+print('**********SELECTED PRINTER***********')
+
+print('**********all printers***********')
+print(getPrinters())
+print('**********all printers***********')
+
+async def runPos(websocket,data):
+    print('***********pos***************')
+    # for bypass pos
+    # return await websocket.send('ok')
+    print('send')
+    print(data['amount'])
+
+    res = await pos.send(data['amount'])
+    await websocket.send(res)
+
+def printFile(data):
+    print('****************print***************')
+    print(data['context'])
+    count = data.get('count',1)
+    root_path = my_docs
+    pdf_file_path = root_path + "\\print.docx"
+    template_file_path = root_path + "\\" + data['template']
+    convertToDocx.run(template_file_path,data['context'])
+    printer_name = config.get("PRINTER")
+    print(printer_name)
+    paper_size = win32con.DMPAPER_A4  # Example: Set the paper size to A4
+    for i in range(1, count + 1):
+        print_pdf(pdf_file_path, printer_name, paper_size)
+
+async def handle_websocket(websocket):
     print("WebSocket connection established")
     try:
         while True:
             data = await websocket.recv()
-            print(data)
+            print(websocket,data)
             data = json.loads(data)
             
             if data['event'] == 'pos':
-                print('***********pos***************')
-                # for bypass pos
-                # await websocket.send('ok')
-                print('send')
-                print(data['amount'])
-
-                res = await pos.send(data['amount'])
-                await websocket.send(res)
+                await runPos(websocket, data)
                 
             if data['event'] == 'print':
-                print('****************print***************')
-                print(data['context'])
-                # root_path = os.path.dirname(os.path.realpath(__file__))
-                root_path = my_docs
-                pdf_file_path = root_path + "\\print.docx"
-                template_file_path = root_path + "\\" + data['template']
-                convertToDocx.run(template_file_path,data['context'])
-                printer_name = config.get("PRINTER")
-                paper_size = win32con.DMPAPER_A4  # Example: Set the paper size to A4
-                print_pdf(pdf_file_path, printer_name, paper_size)
+                printFile(data)
                 
             if data['event'] == 'printers':
                 res = getPrinters()
