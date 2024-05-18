@@ -38,7 +38,8 @@ async def handle_websocket(websocket,path):
             if data['event'] == 'print':
                 print('****************print***************')
                 print(data['context'])
-                root_path = os.path.dirname(os.path.realpath(__file__))
+                # root_path = os.path.dirname(os.path.realpath(__file__))
+                root_path = my_docs
                 pdf_file_path = root_path + "\\print.docx"
                 template_file_path = root_path + "\\" + data['template']
                 convertToDocx.run(template_file_path,data['context'])
