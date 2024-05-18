@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(['index.py'],
-             pathex=['F:\\project\\os-api-web'],
+             pathex=['C:\\Users\\Hossein\\Desktop\\os-api-web'],
              binaries=[],
              datas=[('./print.docx', '.'), ('./template_factor.docx', '.'), ('./template_surat.docx', '.')],
              hiddenimports=[],
