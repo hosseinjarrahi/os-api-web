@@ -28,7 +28,7 @@ print('**********all printers***********')
 async def runPos(websocket,data):
     print('***********pos***************')
     # for bypass pos
-    # return await websocket.send('ok')
+    # return await websocket.send('0020{"cmd":10,"resp":99}')
     print('send')
     print(data['amount'])
 
