@@ -1,12 +1,14 @@
 import os
 import pos
 import json
+import socket
 import asyncio
 import win32con
 import threading
 import userpaths
 import websockets
 import convertToDocx
+from time import sleep
 from print import getPrinters
 from dotenv import dotenv_values
 from print import print_pdf, getPrinters
@@ -15,7 +17,9 @@ my_docs = userpaths.get_my_documents()
 
 config = dotenv_values(my_docs+"\\.env")
 
-print(my_docs+"\\.env")
+print(
+    'local ip => ' + socket.gethostbyname(socket.gethostname())
+)
 
 print('**********SELECTED PRINTER***********')
 print(config.get("PRINTER"))
@@ -25,7 +29,7 @@ print('**********all printers***********')
 print(getPrinters())
 print('**********all printers***********')
 
-async def runPos(websocket,data):
+async def runPos(websocket, data):
     print('***********pos***************')
     # for bypass pos
     # return await websocket.send('0020{"cmd":10,"resp":99}')
@@ -37,32 +41,31 @@ async def runPos(websocket,data):
 
 def printFile(data):
     print('****************print***************')
-    print(data['context'])
-    count = data.get('count',1)
+    count = data.get('count', 1)
     root_path = my_docs
     pdf_file_path = root_path + "\\print.docx"
     template_file_path = root_path + "\\" + data['template']
-    convertToDocx.run(template_file_path,data['context'])
+    convertToDocx.run(template_file_path, data['context'])
     printer_name = config.get("PRINTER")
-    print(printer_name)
     paper_size = win32con.DMPAPER_A4  # Example: Set the paper size to A4
     for i in range(1, count + 1):
         print_pdf(pdf_file_path, printer_name, paper_size)
+        sleep(4)
 
 async def handle_websocket(websocket):
     print("WebSocket connection established")
     try:
         while True:
             data = await websocket.recv()
-            print(websocket,data)
+            print(websocket, data)
             data = json.loads(data)
             
             if data['event'] == 'pos':
-                await runPos(websocket, data)
-                
+                threading.Thread(target=runPos, args=(websocket, data)).start()
+            
             if data['event'] == 'print':
-                printFile(data)
-                
+                threading.Thread(target=printFile, args=(data,)).start()
+            
             if data['event'] == 'printers':
                 res = getPrinters()
                 print('*****************************')
@@ -74,7 +77,7 @@ async def handle_websocket(websocket):
         print("WebSocket connection closed")
 
 
-start_server = websockets.serve(handle_websocket, "127.0.0.1", 8765)  # Replace with your desired IP and port
-print("WebSocket server listening on ws://127.0.0.1:8765...")  # Replace with your IP and port
+start_server = websockets.serve(handle_websocket, "0.0.0.0", 8765)  # Replace with your desired IP and port
+print("WebSocket server listening on ws://0.0.0.0:8765...")  # Replace with your IP and port
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
