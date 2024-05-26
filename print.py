@@ -1,12 +1,13 @@
+import win32con
 import win32api
 import win32print
-import win32con
+from time import sleep
 
 def getPrinters():
     return win32print.EnumPrinters(2)
 
 
-def print_pdf(pdf_file_path, printer_name, paper_size):
+def print_pdf(pdf_file_path, printer_name, paper_size,count):
     # Open the PDF file in binary mode
     with open(pdf_file_path, 'rb') as pdf_file:
         # Get the default printer
@@ -39,15 +40,18 @@ def print_pdf(pdf_file_path, printer_name, paper_size):
                 win32print.DocumentProperties(0, printer_handle, printer_name, dev_mode, dev_mode, win32con.DM_IN_BUFFER | win32con.DM_OUT_BUFFER)
 
                 # Print the PDF file
-                win32api.ShellExecute(
-                    0,
-                    "print",
-                    pdf_file_path,
-                    '/d:"%s"' % printer_name,
-                    ".",
-                    0
-                )
-                print("Printing...")
+                for _ in range(count):
+                    win32api.ShellExecute(
+                        0,
+                        "print",
+                        pdf_file_path,
+                        '/d:"%s"' % printer_name,
+                        ".",
+                        0
+                    )
+                    print("Printing...")
+                    sleep(6)
+                    
             finally:
                 # Close the printer handle
                 win32print.ClosePrinter(printer_handle)

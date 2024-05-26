@@ -48,9 +48,7 @@ def printFile(data):
     convertToDocx.run(template_file_path, data['context'])
     printer_name = config.get("PRINTER")
     paper_size = win32con.DMPAPER_A4  # Example: Set the paper size to A4
-    for i in range(1, count + 1):
-        print_pdf(pdf_file_path, printer_name, paper_size)
-        sleep(4)
+    print_pdf(pdf_file_path, printer_name, paper_size,count)
 
 async def handle_websocket(websocket):
     print("WebSocket connection established")
@@ -61,7 +59,7 @@ async def handle_websocket(websocket):
             data = json.loads(data)
             
             if data['event'] == 'pos':
-                threading.Thread(target=runPos, args=(websocket, data)).start()
+                await runPos(websocket,data)
             
             if data['event'] == 'print':
                 threading.Thread(target=printFile, args=(data,)).start()
