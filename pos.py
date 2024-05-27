@@ -37,7 +37,7 @@ async def send(amount = 12000):
 
         # Receive the response from the server
         response = connection.recv(1024)  # Adjust buffer size as per your requirements
-        decodedRes=response.decode("latin-1")
+        decodedRes = response.decode("latin-1")
         print(f'Received response from server: {decodedRes}')
         return decodedRes
 

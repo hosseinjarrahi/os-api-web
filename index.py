@@ -8,7 +8,6 @@ import threading
 import userpaths
 import websockets
 import convertToDocx
-from time import sleep
 from print import getPrinters
 from dotenv import dotenv_values
 from print import print_pdf, getPrinters
