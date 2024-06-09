@@ -15,7 +15,7 @@ def run(template,context):
     
     templateName = os.path.basename(template)
 
-    if templateName == 'template_surat.docx':
+    if templateName == 'template_surat.docx' or 'template_draft.docx':
         img = qrcode.make(context.get('invoice_number'))
         qrPath = rootPath + "\\qr.png"
         img.save(qrPath)
