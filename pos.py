@@ -1,7 +1,8 @@
-import socket
+import db
 import json
-from dotenv import dotenv_values
+import socket
 import userpaths
+from dotenv import dotenv_values
 
 my_docs = userpaths.get_my_documents()
 
@@ -12,7 +13,7 @@ PORT = config.get("PORT")
 
 # Create a TCP socket
 
-async def send(amount = 12000):
+async def send(amount = 12000, url = ''):
     connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     try:
@@ -33,12 +34,18 @@ async def send(amount = 12000):
 
         # Send the data to the server
         connection.sendall(bytes_data)
+        
         print('Data sent successfully')
 
         # Receive the response from the server
         response = connection.recv(1024)  # Adjust buffer size as per your requirements
+        
         decodedRes = response.decode("latin-1")
+        
         print(f'Received response from server: {decodedRes}')
+        
+        db.create(decodedRes,url)
+        
         return decodedRes
 
     except Exception as e:
