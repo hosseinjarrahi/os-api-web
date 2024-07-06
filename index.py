@@ -11,7 +11,6 @@ import convertToDocx
 from print import getPrinters
 from dotenv import dotenv_values
 from print import print_pdf, getPrinters
-from db import RunLoop
 
 my_docs = userpaths.get_my_documents()
 
@@ -29,7 +28,6 @@ print('**********all printers***********')
 print(getPrinters())
 print('**********all printers***********')
 
-RunLoop()
 
 async def runPos(websocket, data):
     print('***********pos***************')

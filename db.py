@@ -10,7 +10,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS long_string
                   (id INTEGER PRIMARY KEY AUTOINCREMENT, text TEXT, is_checked INTEGER,url TEXT)''')
 
 def create(long_string,url):
-    cursor.execute("INSERT INTO long_string (text) VALUES (?,?,?)", (long_string,url,))
+    cursor.execute("INSERT INTO long_string (text,url,is_checked) VALUES (?,?,?)", (long_string,url,'0'))
     conn.commit()
     
 def RunLoop():
@@ -22,10 +22,10 @@ def RunLoop():
         rows = cursor.fetchall()
         # Loop through the rows and send the data to a server
         for row in rows:
-            id, text = row
-            data = {'data': text}
-            response = requests.post(row.get('url'), data=data)
-            
+            id, url, response = row
+            data = {'data': response}
+            response = requests.post(url, data=data)
+            print(url)
             if response.status_code == 200:
                 cursor.execute("UPDATE long_string SET is_checked = 1 WHERE id = ?", (id,))
                 conn.commit()
