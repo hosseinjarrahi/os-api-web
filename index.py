@@ -1,4 +1,5 @@
 import os
+import dbLoop
 import pos
 import json
 import socket
@@ -28,14 +29,17 @@ print('**********all printers***********')
 print(getPrinters())
 print('**********all printers***********')
 
+
 async def runPos(websocket, data):
     print('***********pos***************')
     # for bypass pos
     # return await websocket.send('0020{"cmd":10,"resp":99}')
     print('send')
+    
     print(data['amount'])
 
-    res = await pos.send(data['amount'])
+    res = await pos.send(data['amount'],data['url'])
+    
     await websocket.send(res)
 
 def printFile(data):
@@ -78,3 +82,5 @@ start_server = websockets.serve(handle_websocket, "0.0.0.0", 8765)  # Replace wi
 print("WebSocket server listening on ws://0.0.0.0:8765...")  # Replace with your IP and port
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
+
+
