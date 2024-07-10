@@ -45,6 +45,7 @@ def updateInvoice(invoiceNumber,img):
 def loopOCR():
     while True:
         sleep(2)
+        loopUpload()
         for filename in os.listdir(image_dir):
 
             if not filename.startswith('S-ADD'):
@@ -59,30 +60,27 @@ def loopOCR():
                     new_file_path = os.path.join(image_dir, code + '.jpg')
                     
                     os.rename(file_path, new_file_path)
-
                 except Exception as e:
                     print(f"Error opening image {filename}: {e}")
                     
 def loopUpload():
-    while True:
-        sleep(2)
-        for filename in os.listdir(image_dir):
 
-            filenameWithoutExtension = Path(filename).stem
+    sleep(2)
+    for filename in os.listdir(image_dir):
 
-            if filenameWithoutExtension.startswith('S-ADD') and not filenameWithoutExtension.endswith('_'):
+        filenameWithoutExtension = Path(filename).stem
+        if filenameWithoutExtension.startswith('S-ADD') and not filenameWithoutExtension.endswith('_'):
+            
+            try:
+                print("dddddddddddd")
+                file_path = os.path.join(image_dir, filename)
+                new_file_path = os.path.join(image_dir, filenameWithoutExtension + '_.jpg')
                 
-                try:
-                    file_path = os.path.join(image_dir, filename)
-
-                    new_file_path = os.path.join(image_dir, filenameWithoutExtension + '_.jpg')
-                    
-                    updateInvoice(filenameWithoutExtension, file_path)
-                    
-                    os.rename(file_path, new_file_path)
-
-                except Exception as e:
-                    print(f"Error opening image {filename}: {e}")
+                updateInvoice(filenameWithoutExtension, file_path)
+                
+                os.rename(file_path, new_file_path)
+            except Exception as e:
+                print(f"Error opening image {filename}: {e}")
        
 print('start reading')  
 
