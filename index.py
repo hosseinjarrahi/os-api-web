@@ -1,5 +1,4 @@
 import os
-import dbLoop
 import pos
 import json
 import socket
@@ -21,6 +20,10 @@ print(
     'local ip => ' + socket.gethostbyname(socket.gethostname())
 )
 
+print(
+    'local pos => ' + config.get("HOST")
+)
+
 print('**********SELECTED PRINTER***********')
 print(config.get("PRINTER"))
 print('**********SELECTED PRINTER***********')
@@ -34,11 +37,19 @@ async def runPos(websocket, data):
     print('***********pos***************')
     # for bypass pos
     # return await websocket.send('0020{"cmd":10,"resp":99}')
+    # print(data)
+    # return await websocket.send('0020{"key":"' + data.get('key') + '","cmd":10,"resp":0,"pan":"603770**1285","rrn":"806720040564","terminal":"99028391","trace":"13880","serial":"003193","amount":"11135850","settlement":"11135850","discount":"0","data1":"BK007\u0098\u00d4\u00c7\u00e6\u00d1\u00d2\u00edDT012240727103513RL0011FP0012SP0011T9009236475393IB026IR400590047200404655354002"}')
+
     print('send')
     
     print(data['amount'])
 
-    res = await pos.send(data['amount'],data['url'])
+    # res = await pos.send(data['amount'],data['url'])
+    res = await pos.send(12000,data['url'])
+    
+    # todo: should find { and then automaticly detect index of { and then insert key in string
+    if 'key' in data:
+        res = res[0:5] + '"key":"' + data.get('key') + '",' + res[5:]
     
     await websocket.send(res)
 
