@@ -41,14 +41,12 @@ def print_pdf(pdf_file_path, printer_name, paper_size,count):
 
                 # Print the PDF file
                 for _ in range(count):
-                    win32api.ShellExecute(
-                        0,
-                        "print",
-                        pdf_file_path,
-                        '/d:"%s"' % printer_name,
-                        ".",
-                        0
-                    )
+                    job_info = ("Print Job", None, "RAW")
+                    win32print.StartDocPrinter(printer_handle, 1, job_info)
+                    win32print.StartPagePrinter(printer_handle)
+                    win32print.WritePrinter(printer_handle, pdf_file.read())
+                    win32print.EndPagePrinter(printer_handle)
+                    win32print.EndDocPrinter(printer_handle)
                     print("Printing...")
                     sleep(6)
                     
