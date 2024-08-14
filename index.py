@@ -32,6 +32,10 @@ print('**********all printers***********')
 print(getPrinters())
 print('**********all printers***********')
 
+def custom_encoder(obj):
+    if isinstance(obj, tuple):
+        return {'__tuple__': True, 'items': list(obj)}
+    return obj
 
 async def runPos(websocket, data):
     print('***********pos***************')
@@ -79,10 +83,10 @@ async def handle_websocket(websocket):
             
             if data['event'] == 'printers':
                 res = getPrinters()
-                print('*****************************')
-                print(type(res))
-                print('*****************************')
-                await websocket.send(res)
+                
+                json_data = json.dumps(res, default=custom_encoder)
+
+                await websocket.send(json_data)
 
     except websockets.ConnectionClosed:
         print("WebSocket connection closed")
