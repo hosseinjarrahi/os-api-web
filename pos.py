@@ -15,23 +15,23 @@ PORT = config.get("PORT")
 # Create a TCP socket
 
 async def send(amount = 12000, url = ''):
-    data = json.dumps({
-        "cmd":10,
-        "resp":0,
-        "pan":"603799**7145",
-        "rrn":"806524281275",
-        "terminal":"99028391",
-        "trace":"254395",
-        "serial":"002167",
-        "amount":"3218600",
-        "settlement":"3218600",
-        "discount":"0",
-        "data1":"BK003\u00e3\u00e1\u00edDT012240706083437RL0011FP0012SP0011T9009236475393"
-    })
+    # data = json.dumps({
+    #     "cmd":10,
+    #     "resp":0,
+    #     "pan":"603799**7145",
+    #     "rrn":"806524281275",
+    #     "terminal":"99028391",
+    #     "trace":"254395",
+    #     "serial":"002167",
+    #     "amount":"3218600",
+    #     "settlement":"3218600",
+    #     "discount":"0",
+    #     "data1":"BK003\u00e3\u00e1\u00edDT012240706083437RL0011FP0012SP0011T9009236475393"
+    # })
 
-    db.create(data,url)
+    # db.create(data,url)
 
-    return data
+    # return data
 
     connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
