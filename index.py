@@ -10,7 +10,7 @@ import websockets
 import convertToDocx
 from print import getPrinters
 from dotenv import dotenv_values
-from print import print_pdf, getPrinters
+from print import print_word_file, getPrinters
 
 my_docs = userpaths.get_my_documents()
 
@@ -65,7 +65,7 @@ def printFile(data):
     convertToDocx.run(template_file_path, data['context'])
     printer_name = data.get("printer") if data.get("printer") else config.get("PRINTER")
     paper_size = win32con.DMPAPER_A4  # Example: Set the paper size to A4
-    print_pdf(pdf_file_path, printer_name, paper_size,count)
+    print_word_file(pdf_file_path, printer_name, paper_size,count)
 
 async def handle_websocket(websocket):
     print("WebSocket connection established")
