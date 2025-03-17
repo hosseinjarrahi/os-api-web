@@ -42,10 +42,10 @@ async def runPos(websocket, data):
     # for bypass pos
     # return await websocket.send('0020{"cmd":10,"resp":99}')
     # print(data)
-    # return await websocket.send('0020{"key":"' + data.get('key') + '","cmd":10,"resp":0,"pan":"603770**1285","rrn":"806720040564","terminal":"99028391","trace":"13880","serial":"003193","amount":"11135850","settlement":"11135850","discount":"0","data1":"BK007\u0098\u00d4\u00c7\u00e6\u00d1\u00d2\u00edDT012240727103513RL0011FP0012SP0011T9009236475393IB026IR400590047200404655354002"}')
+    return await websocket.send('0020{"key":"' + data.get('key') + '","cmd":10,"resp":0,"pan":"603770**1285","rrn":"806720040564","terminal":"99028391","trace":"13880","serial":"003193","amount":"11135850","settlement":"11135850","discount":"0","data1":"BK007\u0098\u00d4\u00c7\u00e6\u00d1\u00d2\u00edDT012240727103513RL0011FP0012SP0011T9009236475393IB026IR400590047200404655354002"}')
 
-    print('send')
-    print(data['amount'])
+    # print('send')
+    # print(data['amount'])
 
     # res = await pos.send(data['amount'],data['url'])
     res = await pos.send(data.get('amount'), data.get('url'))
